@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String LOADING_PHRASE_CONFIG_KEY = "loading_phrase";
     private static final String WELCOME_MESSAGE_KEY = "welcome_message";
     private static final String WELCOME_MESSAGE_CAPS_KEY = "welcome_message_caps";
+    private static final String DEVICE_ID = "deviceId";
 
     private FirebaseRemoteConfig firebaseRemoteConfig;
     private TextView welcomeTextView;
@@ -47,6 +49,10 @@ public class MainActivity extends AppCompatActivity {
         firebaseRemoteConfig.setConfigSettings(configSettings);
         firebaseRemoteConfig.setDefaults(R.xml.remote_config_defaults);
 
+        //TODO, Get the real deviceId and update the cloud console with its value.
+        FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        firebaseAnalytics.setUserProperty(DEVICE_ID, "1234");
+
         fetchWelcome();
     }
 
@@ -67,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(MainActivity.this, "Fetch failed",
                                     Toast.LENGTH_SHORT).show();
                         }
+
                         updateUI();
                     }
                 });
